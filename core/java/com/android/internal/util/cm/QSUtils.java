@@ -289,7 +289,7 @@ public class QSUtils {
                 && sm.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null;
     }
 
-    private static boolean isDozeAvailable(Context context) {
+    public static boolean isDozeAvailable(Context context) {
         String name = Build.IS_DEBUGGABLE ? SystemProperties.get("debug.doze.component") : null;
         if (TextUtils.isEmpty(name)) {
             name = context.getResources().getString(
