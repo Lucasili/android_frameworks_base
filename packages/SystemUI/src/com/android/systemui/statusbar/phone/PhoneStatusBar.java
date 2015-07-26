@@ -342,6 +342,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     // Weather temperature
     TextView mWeatherTempView;
     private int mWeatherTempState;
+    private int mWeatherTempStyle;
 
     // the icons themselves
     IconMerger mNotificationIcons;
@@ -518,6 +519,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.LOCKSCREEN_HIDE_TILES_WITH_SENSITIVE_DATA),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_WEATHER_TEMP_STYLE),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -548,7 +552,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     initTickerView();
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.USE_SLIM_RECENTS))) {
-                updateRecents();
+                    updateRecents();
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_WEATHER_TEMP_STYLE))) {
+                    mWeatherTempStyle = Settings.System.getIntForUser(
+                            mContext.getContentResolver(),
+                            Settings.System.STATUS_BAR_WEATHER_TEMP_STYLE, 0,
+                            UserHandle.USER_CURRENT);
+                    updateTempView();
             }
             update();
         }
@@ -706,20 +717,34 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mNavigationBarView.updateResources(getNavbarThemedResources());
         addNavigationBar(true); // dynamically adding nav bar, reset System UI visibility!
     }
-	
+
     private void updateWeatherTextState(String temp) {
-        if (mWeatherTempState == 0 || TextUtils.isEmpty(temp)) {
+        if (mWeatherTempView != null) {
+            if (mWeatherTempState == 0 || TextUtils.isEmpty(temp)) {
+                mWeatherTempView.setVisibility(View.GONE);
+                return;
+            }
+            if (mWeatherTempState == 1) {
+                SpannableString span = new SpannableString(temp);
+                span.setSpan(new RelativeSizeSpan(0.7f), temp.length() - 1, temp.length(), 0);
+                mWeatherTempView.setText(span);
+            } else if (mWeatherTempState == 2) {
+                mWeatherTempView.setText(temp.substring(0, temp.length() - 1));
+            }
+            mWeatherTempView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateTempView() {
+        if (mWeatherTempView != null) {
             mWeatherTempView.setVisibility(View.GONE);
-            return;
+            if (mWeatherTempStyle == 0) {
+                mWeatherTempView = (TextView) mStatusBarView.findViewById(R.id.weather_temp);
+            } else {
+                mWeatherTempView = (TextView) mStatusBarView.findViewById(R.id.left_weather_temp);
+            }
+            updateWeatherTextState(mWeatherController.getWeatherInfo().temp);
         }
-        if (mWeatherTempState == 1) {
-            SpannableString span = new SpannableString(temp);
-            span.setSpan(new RelativeSizeSpan(0.7f), temp.length() - 1, temp.length(), 0);
-            mWeatherTempView.setText(span);
-        } else if (mWeatherTempState == 2) {
-            mWeatherTempView.setText(temp.substring(0, temp.length() - 1));
-        }
-        mWeatherTempView.setVisibility(View.VISIBLE);
     }
 
     // ensure quick settings is disabled until the current user makes it through the setup wizard
@@ -1331,6 +1356,26 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             });
         }
 
+        if (mWeatherController == null) {
+            mWeatherController = new WeatherControllerImpl(mContext);
+            mWeatherController.addCallback(new WeatherController.Callback() {
+                @Override
+                public void onWeatherChanged(WeatherInfo temp) {
+                    updateWeatherTextState(temp.temp);
+                }
+            });
+        }
+        updateWeatherTextState(mWeatherController.getWeatherInfo().temp);
+
+        mWeatherTempStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.STATUS_BAR_WEATHER_TEMP_STYLE, 0, UserHandle.USER_CURRENT);
+        if (mWeatherTempStyle == 0) {
+            mWeatherTempView = (TextView) mStatusBarView.findViewById(R.id.weather_temp);
+        } else {
+            mWeatherTempView = (TextView) mStatusBarView.findViewById(R.id.left_weather_temp);
+        }
+        updateTempView();
+
         mKeyguardBottomArea.setPhoneStatusBar(this);
         if (mAccessibilityController == null) {
             mAccessibilityController = new AccessibilityController(mContext);
@@ -1345,21 +1390,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (mUserSwitcherController == null) {
             mUserSwitcherController = new UserSwitcherController(mContext, mKeyguardMonitor);
         }
-
-        mWeatherTempView = (TextView) mStatusBarView.findViewById(R.id.weather_temp);
-        mWeatherTempState = Settings.System.getIntForUser(
-                mContext.getContentResolver(), Settings.System.STATUS_BAR_SHOW_WEATHER_TEMP, 0,
-                UserHandle.USER_CURRENT);
-        if (mWeatherController == null) {
-            mWeatherController = new WeatherControllerImpl(mContext);
-            mWeatherController.addCallback(new WeatherController.Callback() {
-                @Override
-                public void onWeatherChanged(WeatherInfo temp) {
-                    updateWeatherTextState(temp.temp);
-                }
-            });
-        }
-        updateWeatherTextState(mWeatherController.getWeatherInfo().temp);
 
         mKeyguardUserSwitcher = new KeyguardUserSwitcher(mContext,
                 (ViewStub) mStatusBarWindowContent.findViewById(R.id.keyguard_user_switcher),
