@@ -2551,6 +2551,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             loadHeadsUpSetting(stmt);
 
+            loadIntegerSetting(stmt, Settings.System.NOTIFICATION_LIGHT_BRIGHTNESS_LEVEL,
+                    R.integer.def_notification_brightness_level);
+
         } finally {
             if (stmt != null) stmt.close();
         }
