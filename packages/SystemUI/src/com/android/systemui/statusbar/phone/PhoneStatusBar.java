@@ -641,9 +641,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mSidebarEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.APP_SIDEBAR_ENABLED, 0, UserHandle.USER_CURRENT) == 1;
             if (mSidebarEnabled) {
-                addSidebarView();
-            } else {
                 removeSidebarView();
+                addSidebarView();
             }
 
             int sidebarPosition = Settings.System.getInt(resolver,
@@ -4437,7 +4436,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (newTheme != null) mCurrentTheme = (ThemeConfig) newTheme.clone();
         if (updateStatusBar) {
             recreateStatusBar();
-            addSidebarView();
         } else {
             loadDimens();
         }
