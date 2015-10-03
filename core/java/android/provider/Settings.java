@@ -2080,6 +2080,11 @@ public final class Settings {
         public static final String SHOW_SU_ICON = "show_su_icon";
 
         /**
+         * @hide
+         */
+        public static final String HIDE_ALARMS_NOTIFICATIONS = "hide_alarms_notifications";
+
+        /**
          * Scaling factor for fonts, float.
          */
         public static final String FONT_SCALE = "font_scale";
@@ -2473,6 +2478,35 @@ public final class Settings {
         public static final String DEFAULT_RINGTONE = "ringtone_default";
 
         /**
+         * Lists of all group ringtone and general contact ringtone.
+         * @hide
+         */
+        public static final String GROUP_RINGTONE =
+                "contacts_group_ringtones";
+
+	/**
+         * Config for advanced power menu
+         *
+         * @hide
+         */
+        public static final String QUICK_TILE_CONFIG = "quick_tile_config";
+
+        /**
+         * Defines the shortcuts to be shown on lockscreen
+         * Usage is like this: target:icon|target:icon|target:icon
+         * if :icon is not set, default application icon will be used
+         * @hide
+         */
+        public static final String LOCKSCREEN_SHORTCUTS = "lockscreen_shortcuts";
+
+        /**
+         * Whether shorcuts open with normal or longpress
+         * @hide
+         */
+        public static final String LOCKSCREEN_SHORTCUTS_LONGPRESS =
+                "lockscreen_shortcuts_longpress";
+
+        /**
          * Persistent store for the system-wide default ringtone URI.
          * <p>
          * If you need to play the default ringtone at any given time, it is recommended
@@ -2482,6 +2516,26 @@ public final class Settings {
          * @see #DEFAULT_RINGTONE_URI
          */
         public static final String RINGTONE = "ringtone";
+
+        /**
+         * Whether the proximity sensor will adjust call to speaker
+         * @hide
+         */
+        public static final String PROXIMITY_AUTO_SPEAKER = "proximity_auto_speaker";
+
+        /**
+         * Time delay to activate speaker after proximity sensor triggered
+         * @hide
+         */
+        public static final String PROXIMITY_AUTO_SPEAKER_DELAY = "proximity_auto_speaker_delay";
+
+        /**
+         * Whether the proximity sensor will adjust call to speaker,
+         * only while in call (not while ringing on outgoing call)
+         * @hide
+         */
+        public static final String PROXIMITY_AUTO_SPEAKER_INCALL_ONLY =
+                "proximity_auto_speaker_incall_only";
 
         /**
          * Persistent store for the SIM-2 ringtone URI.
