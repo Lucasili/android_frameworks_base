@@ -1424,6 +1424,9 @@ public class NotificationPanelView extends PanelView implements
             case 2: // Left side pulldown
                 showQsOverride = isLayoutRtl() ? (w - region < x) : (x < region);
                 break;
+            case 3: // Always pulldown
+                showQsOverride = true;
+                break;
         }
         showQsOverride = showQsOverride && mStatusBarState == StatusBarState.SHADE;
 
