@@ -25,4 +25,8 @@
     <!-- Doze: force using accelerometer as pick up sensor -->
     <bool name="config_dozeUseAccelerometer">false</bool>
 
+    <!-- Packages in this list should be a union of all packages defined in values-mccxxx (mcc) -->
+    <string-array name="config_restrict_to_region_locked_devices" translatable="false">
+    </string-array>
+
 </resources>
