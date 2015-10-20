@@ -4182,6 +4182,12 @@ public final class Settings {
          */
         public static final String SCREENSHOT_DELAY = "screenshot_delay";
 
+/**
+         * Whether to use the proximity sensor to turn the screen on/off during a call
+         * @hide
+         */
+        public static final String IN_CALL_PROXIMITY_SENSOR = "in_call_proximity_sensor";
+
         /**
          * Whether to use the custom status bar header or not
          * @hide
