@@ -19,7 +19,23 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- label for screen record item in phone options dialog -->
+    <string name="permlab_recordScreen">Contenuto registrazione mostrata</string>
+    <string name="permdesc_recordScreen">Permetti all\'app di registrare lo schermo</string>
     <string name="global_action_screen_record">Registra schermo</string>
-
+    <string name="default_string">Predefinito</string>
+    <string name="animation_default">Predefinito</string>
+    <string name="animation_fade">Sfuma</string>
+    <string name="animation_slide_right">Scorri da destra</string>
+    <string name="animation_slide_left">Scorri da sinistra</string>
+    <string name="animation_slide_right_no_fade">Scorri da destra (No sfuma)</string>
+    <string name="animation_slide_left_no_fade">Scorri da sinistra (No sfuma)</string>
+    <string name="animation_slide_up">Scorri dal basso</string>
+    <string name="animation_slide_down">Scorri dall\'alto</string>
+    <string name="animation_translucent">Traslucido</string>
+    <string name="animation_grow_shrink">Ingrandire (in alto)</string>
+    <string name="animation_grow_shrink_center">Ingrandire (centrato)</string>
+    <string name="animation_grow_shrink_bottom">Ingrandire (in basso)</string>
+    <string name="animation_grow_shrink_left">Ingrandire (da sinistra)</string>
+    <string name="animation_grow_shrink_right">Ingrandire (da destra)</string>
+    <string name="action_null">Vuoto</string>
 </resources>
